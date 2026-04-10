@@ -10,9 +10,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Corregir conflicto de MPM
+# Habilitar mod_rewrite para el Router
 RUN a2dismod mpm_event || true \
-    && a2dismod mpm_worker || true \
     && a2enmod mpm_prefork \
     && a2enmod rewrite
 
@@ -23,7 +22,7 @@ WORKDIR /var/www/html
 
 COPY . .
 
-# Configurar Apache DocumentRoot hacia /public
+# Apuntar Apache a /public
 RUN echo '<VirtualHost *:80>\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
@@ -35,7 +34,7 @@ RUN echo '<VirtualHost *:80>\n\
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Instalar dependencias Node y hacer build de assets
+# Build de assets con Gulp
 RUN npm install && npm run build
 
 # Permisos
