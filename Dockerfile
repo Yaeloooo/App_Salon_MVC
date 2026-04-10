@@ -10,12 +10,11 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Corregir conflicto de MPM - forzar solo prefork
+# Corregir conflicto de MPM
 RUN a2dismod mpm_event || true \
     && a2dismod mpm_worker || true \
     && a2enmod mpm_prefork \
-    && a2enmod rewrite \
-    && a2enmod php8
+    && a2enmod rewrite
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -24,7 +23,7 @@ WORKDIR /var/www/html
 
 COPY . .
 
-# Configurar Apache para usar /var/www/html/public como DocumentRoot
+# Configurar Apache DocumentRoot hacia /public
 RUN echo '<VirtualHost *:80>\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
