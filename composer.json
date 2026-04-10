@@ -1,0 +1,25 @@
+{
+    "name": "administrator/app-salon_php_mvc_js_sass",
+    "description": "app salon",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Administrator\\AppSalonPhpMvcJsSass\\": "src/",
+            "Model\\" : "./models",
+            "MVC\\" : "./",
+            "Controllers\\" : "./controllers",
+            "Classes\\" : "./clasess"
+
+        }
+    },
+    "authors": [
+        {
+            "name": "Yaeloooo",
+            "email": "anibal.gonzalez1426@alumnos.udg.mx"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.0",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
