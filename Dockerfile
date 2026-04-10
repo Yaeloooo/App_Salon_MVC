@@ -40,5 +40,9 @@ RUN npm install && npm run build
 # Permisos
 RUN chown -R www-data:www-data /var/www/html
 
-EXPOSE 80
+EXPOSE 8080
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
+    && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf
 CMD ["apache2-foreground"]
