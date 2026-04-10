@@ -10,6 +10,12 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
+# Corregir conflicto de MPM en Apache
+RUN a2dismod mpm_event mpm_worker && a2enmod mpm_prefork
+
+# Habilitar mod_rewrite para las rutas PHP
+RUN a2enmod rewrite
+
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -27,3 +33,4 @@ RUN npm install && npm run build
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
+CMD ["apache2-foreground"]
